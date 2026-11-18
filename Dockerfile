@@ -19,7 +19,14 @@ WORKDIR /app
 
 COPY --from=build --chown=node:node /prod/api /app
 RUN apk add --no-cache git
-RUN git init && git remote add origin https://github.com && git config user.email "a@b.c" && git config user.name "a" && touch a && git add a && git commit -m "init"
+RUN git init -b main \
+    && git remote add origin https://github.com \
+    && git config user.email "a@b.c" \
+    && git config user.name "a" \
+    && touch a && git add a && git commit -m "init" \
+    && git update-ref refs/remotes/origin/main HEAD \
+    && git branch --set-upstream-to=origin/main main \
+    && chown -R node:node /app
 
 USER node
 
