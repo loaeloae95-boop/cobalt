@@ -18,7 +18,8 @@ FROM base AS api
 WORKDIR /app
 
 COPY --from=build --chown=node:node /prod/api /app
-#
+RUN apk add --no-cache git
+RUN git init && git config user.email "a@b.c" && git config user.name "a" && touch a && git add a && git commit -m "init"
 
 USER node
 
